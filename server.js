@@ -32,10 +32,8 @@ app.get('/', checkJwt, (req, res) => {
   return res.json({
     "X-Hasura-User-Id": req.user.sub,
     "X-Hasura-Role": "user",
-    // "X-Hasura-Is-Owner": "true",
-    // "X-Hasura-Custom": "custom value"
   });
-})
+});
 
 app.listen(PORT, () => {
   console.log("Server Running at port " + PORT);
