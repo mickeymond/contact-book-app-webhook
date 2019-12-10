@@ -3,10 +3,28 @@ const express = require('express');
 const jwt = require('express-jwt');
 // const jwtAuthz = require('express-jwt-authz');
 const jwksRsa = require('jwks-rsa');
+const graphqlHTTP = require('express-graphql');
+const { buildSchema } = require('graphql');
 
 const PORT = process.env.PORT || 4000;
 
 const app = express();
+
+const schema = buildSchema(`
+  type Query {
+    twitterProfileLink(username: String!): String
+  }
+`);
+
+const rootValue = {
+  twitterProfileLink: ({ username }) => `https://twitter.com/${username}`
+}
+
+app.use('/graphql', graphqlHTTP({
+  schema,
+  rootValue,
+  graphiql: true
+}));
 
 // Authentication middleware. When used, the
 // Access Token must exist and be verified against
